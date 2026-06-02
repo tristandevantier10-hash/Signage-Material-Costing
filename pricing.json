@@ -93,6 +93,6 @@
   },
 
   "defaults": {
-    "markup_percent": 25
+    "markup_percent": 100
   }
 }
