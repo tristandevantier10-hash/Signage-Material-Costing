@@ -1,125 +1,31 @@
 {
-  "materials": [
+  "id": "VINYL",
+  "name": "Adhesive Vinyl",
+  "category": "Roll",
+  "variants": [
     {
-      "id": "ACM",
-      "name": "Aluminium Composite Material",
-      "category": "Sheet",
-      "variants": [
-        {
-          "thickness_mm": 3,
-          "colors": ["White", "Black", "Brushed"]
-        },
-        {
-          "thickness_mm": 4,
-          "colors": ["White", "Black", "Brushed"]
-        },
-        {
-          "thickness_mm": 6,
-          "colors": ["White", "Black", "Brushed"]
-        }
-      ]
+      "type": "Monomeric",
+      "usage": "Indoor",
+      "duration_years": 1,
+      "roll_width_mm": 610
     },
-
     {
-      "id": "VINYL",
-      "name": "Adhesive Vinyl",
-      "category": "Roll",
-      "variants": [
-        {
-          "types": ["Monomeric", "Polymer", "Cast"],
-          "roll_widths_mm": [610, 1220, 1370, 1524]
-        }
-      ]
+      "type": "Monomeric",
+      "usage": "Indoor",
+      "duration_years": 1,
+      "roll_width_mm": 1220
     },
-
     {
-      "id": "CORREX",
-      "name": "Corrugated Plastic (Correx)",
-      "category": "Sheet",
-      "variants": [
-        { "thickness_mm": 3 },
-        { "thickness_mm": 4 },
-        { "thickness_mm": 6 }
-      ]
+      "type": "Monomeric",
+      "usage": "Outdoor",
+      "duration_years": 3,
+      "roll_width_mm": 1220
     },
-
     {
-      "id": "FOAMEX",
-      "name": "PVC Foam Board",
-      "category": "Sheet",
-      "variants": [
-        { "thickness_mm": 3 },
-        { "thickness_mm": 5 },
-        { "thickness_mm": 10 }
-      ]
-    },
-
-    {
-      "id": "ACRYLIC",
-      "name": "Acrylic (Plexiglass)",
-      "category": "Sheet",
-      "variants": [
-        { "thickness_mm": 3 },
-        { "thickness_mm": 5 },
-        { "thickness_mm": 10 }
-      ]
-    },
-
-    {
-      "id": "ALUMINUM",
-      "name": "Solid Aluminium Sheet",
-      "category": "Sheet",
-      "variants": [
-        { "thickness_mm": 1 },
-        { "thickness_mm": 2 },
-        { "thickness_mm": 3 }
-      ]
-    },
-
-    {
-      "id": "BACKLIT",
-      "name": "Backlit Sign Materials",
-      "category": "Specialty",
-      "variants": [
-        {
-          "types": [
-            "Acrylic Diffuser",
-            "Polycarbonate Diffuser",
-            "Lightbox Panel"
-          ]
-        }
-      ]
-    },
-
-    {
-      "id": "STEEL_TUBING",
-      "name": "Steel Tubing",
-      "category": "Structural",
-      "variants": [
-        { "sizes_mm": [{ "width": 25, "height": 25 }] },
-        { "sizes_mm": [{ "width": 50, "height": 50 }] }
-      ]
-    },
-
-    {
-      "id": "FOAM_BOARD",
-      "name": "Foam Board",
-      "category": "Sheet",
-      "variants": [
-        { "thickness_mm": 5 },
-        { "thickness_mm": 10 }
-      ]
-    },
-
-    {
-      "id": "BANNER",
-      "name": "Digital Print Banner Material",
-      "category": "Roll",
-      "variants": [
-        {
-          "types": ["PVC Banner", "Mesh Banner"]
-        }
-      ]
+      "type": "Cast",
+      "usage": "Outdoor",
+      "duration_years": 5,
+      "roll_width_mm": 1524
     }
   ]
 }
