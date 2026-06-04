@@ -1,121 +1,95 @@
 {
-  "id": "VINYL",
-  "name": "Adhesive Vinyl",
-  "category": "Roll",
-  "variants": [
-    
-    // =========================
-    // SELF-ADHESIVE VINYL
-    // =========================
+  "materials": [
     {
-      "type": "Monomeric",
-      "usage": "Self-Adhesive Indoor",
-      "duration_years": 1,
-      "roll_width_mm": 300,
-      "cost_per_m2": 55
-    },
-    {
-      "type": "Monomeric",
-      "usage": "Self-Adhesive Indoor",
-      "duration_years": 1,
-      "roll_width_mm": 600,
-      "cost_per_m2": 55
-    },
-    {
-      "type": "Monomeric",
-      "usage": "Self-Adhesive Indoor",
-      "duration_years": 1,
-      "roll_width_mm": 1220,
-      "cost_per_m2": 55
-    },
-    {
-      "type": "Monomeric",
-      "usage": "Self-Adhesive Indoor",
-      "duration_years": 1,
-      "roll_width_mm": 1370,
-      "cost_per_m2": 55
-    },
+      "id": "VINYL",
+      "name": "Adhesive Vinyl",
+      "category": "Roll",
 
-    // -------------------------
-    // OUTDOOR MONOMERIC
-    // -------------------------
-    {
-      "type": "Monomeric",
-      "usage": "Self-Adhesive Outdoor",
-      "duration_years": 3,
-      "roll_width_mm": 600,
-      "cost_per_m2": 65
-    },
-    {
-      "type": "Monomeric",
-      "usage": "Self-Adhesive Outdoor",
-      "duration_years": 3,
-      "roll_width_mm": 1220,
-      "cost_per_m2": 65
-    },
-    {
-      "type": "Monomeric",
-      "usage": "Self-Adhesive Outdoor",
-      "duration_years": 3,
-      "roll_width_mm": 1370,
-      "cost_per_m2": 65
-    },
+      "variants": [
+        {
+          "type": "Monomeric",
+          "usage": "Self-Adhesive Indoor",
+          "duration_years": 1,
+          "cost_per_m2": 55,
 
-    // =========================
-    // CAST VINYL (LONG LIFE)
-    // =========================
-    {
-      "type": "Cast",
-      "usage": "Self-Adhesive Outdoor",
-      "duration_years": 7,
-      "roll_width_mm": 600,
-      "cost_per_m2": 140
-    },
-    {
-      "type": "Cast",
-      "usage": "Self-Adhesive Outdoor",
-      "duration_years": 10,
-      "roll_width_mm": 1220,
-      "cost_per_m2": 140
-    },
-    {
-      "type": "Cast",
-      "usage": "Self-Adhesive Outdoor",
-      "duration_years": 10,
-      "roll_width_mm": 1370,
-      "cost_per_m2": 140
-    },
+          "formats": [
+            { "roll_width_mm": 300 },
+            { "roll_width_mm": 600 },
+            { "roll_width_mm": 1220 },
+            { "roll_width_mm": 1370 }
+          ]
+        },
 
-    // =========================
-    // SPECIALTY VINYL
-    // =========================
-    {
-      "type": "Specialty",
-      "usage": "Reflective Outdoor",
-      "duration_years": 7,
-      "roll_width_mm": 600,
-      "cost_per_m2": 220
-    },
-    {
-      "type": "Specialty",
-      "usage": "Reflective Outdoor",
-      "duration_years": 7,
-      "roll_width_mm": 1220,
-      "cost_per_m2": 220
-    },
-    {
-      "type": "Specialty",
-      "usage": "Sandblast Indoor",
-      "duration_years": 10,
-      "roll_width_mm": 1220,
-      "cost_per_m2": 180
-    },
-    {
-      "type": "Specialty",
-      "usage": "Etched Glass Indoor",
-      "duration_years": 10,
-      "roll_width_mm": 1220,
-      "cost_per_m2": 180
+        {
+          "type": "Monomeric",
+          "usage": "Self-Adhesive Outdoor",
+          "duration_years": 3,
+          "cost_per_m2": 65,
+
+          "formats": [
+            { "roll_width_mm": 600 },
+            { "roll_width_mm": 1220 },
+            { "roll_width_mm": 1370 }
+          ]
+        },
+
+        {
+          "type": "Cast",
+          "usage": "Self-Adhesive Outdoor",
+          "duration_years": 7,
+          "cost_per_m2": 140,
+
+          "formats": [
+            { "roll_width_mm": 600 }
+          ]
+        },
+
+        {
+          "type": "Cast",
+          "usage": "Self-Adhesive Outdoor",
+          "duration_years": 10,
+          "cost_per_m2": 140,
+
+          "formats": [
+            { "roll_width_mm": 1220 },
+            { "roll_width_mm": 1370 }
+          ]
+        },
+
+        {
+          "type": "Specialty",
+          "usage": "Reflective Outdoor",
+          "duration_years": 7,
+          "cost_per_m2": 220,
+
+          "formats": [
+            { "roll_width_mm": 600 },
+            { "roll_width_mm": 1220 }
+          ]
+        },
+
+        {
+          "type": "Specialty",
+          "usage": "Sandblast Indoor",
+          "duration_years": 10,
+          "cost_per_m2": 180,
+
+          "formats": [
+            { "roll_width_mm": 1220 }
+          ]
+        },
+
+        {
+          "type": "Specialty",
+          "usage": "Etched Glass Indoor",
+          "duration_years": 10,
+          "cost_per_m2": 180,
+
+          "formats": [
+            { "roll_width_mm": 1220 }
+          ]
+        }
+      ]
     }
   ]
 }
