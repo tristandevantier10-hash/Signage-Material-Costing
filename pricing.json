@@ -40,10 +40,11 @@
         }
       ]
     }
-  ]
-}
-
+  ],
   "defaults": {
     "markup_percent": 100
+  },
+  "labour": {
+    "cost_per_m2": 0.0
   }
 }
