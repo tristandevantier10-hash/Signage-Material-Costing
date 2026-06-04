@@ -1,96 +1,47 @@
 {
   "materials": [
     {
-      "id": "ACM",
-      "pricing": [
-        { "thickness_mm": 3, "cost_per_sheet": 950 },
-        { "thickness_mm": 4, "cost_per_sheet": 1250 },
-        { "thickness_mm": 6, "cost_per_sheet": 1850 }
-      ]
-    },
-
-    {
       "id": "VINYL",
       "pricing": [
-        { "type": "Monomeric", "cost_per_m2": 55 },
-        { "type": "Polymer", "cost_per_m2": 85 },
-        { "type": "Cast", "cost_per_m2": 140 }
-      ]
-    },
-
-    {
-      "id": "CORREX",
-      "pricing": [
-        { "thickness_mm": 3, "cost_per_sheet": 180 },
-        { "thickness_mm": 4, "cost_per_sheet": 220 },
-        { "thickness_mm": 6, "cost_per_sheet": 290 }
-      ]
-    },
-
-    {
-      "id": "FOAMEX",
-      "pricing": [
-        { "thickness_mm": 3, "cost_per_sheet": 450 },
-        { "thickness_mm": 5, "cost_per_sheet": 650 },
-        { "thickness_mm": 10, "cost_per_sheet": 1200 }
-      ]
-    },
-
-    {
-      "id": "ACRYLIC",
-      "pricing": [
-        { "thickness_mm": 3, "cost_per_sheet": 980 },
-        { "thickness_mm": 5, "cost_per_sheet": 1450 },
-        { "thickness_mm": 10, "cost_per_sheet": 2600 }
-      ]
-    },
-
-    {
-      "id": "ALUMINUM",
-      "pricing": [
-        { "thickness_mm": 1, "cost_per_sheet": 1100 },
-        { "thickness_mm": 2, "cost_per_sheet": 1800 },
-        { "thickness_mm": 3, "cost_per_sheet": 2500 }
-      ]
-    },
-
-    {
-      "id": "BACKLIT",
-      "pricing": [
-        { "type": "Acrylic Diffuser", "cost_per_m2": 320 },
-        { "type": "Polycarbonate Diffuser", "cost_per_m2": 410 },
-        { "type": "Lightbox Panel", "cost_per_m2": 550 }
-      ]
-    },
-
-    {
-      "id": "STEEL_TUBING",
-      "pricing": [
-        { "size": "25x25", "cost_per_meter": 55 },
-        { "size": "50x50", "cost_per_meter": 90 }
-      ]
-    },
-
-    {
-      "id": "FOAM_BOARD",
-      "pricing": [
-        { "thickness_mm": 5, "cost_per_sheet": 320 },
-        { "thickness_mm": 10, "cost_per_sheet": 520 }
-      ]
-    },
-
-    {
-      "id": "BANNER",
-      "pricing": [
-        { "type": "PVC Banner", "cost_per_m2": 45 },
-        { "type": "Mesh Banner", "cost_per_m2": 65 }
+        {
+          "type": "Monomeric",
+          "usage": "Indoor",
+          "duration_years": 1,
+          "roll_width_mm": 610,
+          "cost_per_m2": 55
+        },
+        {
+          "type": "Monomeric",
+          "usage": "Indoor",
+          "duration_years": 1,
+          "roll_width_mm": 1220,
+          "cost_per_m2": 55
+        },
+        {
+          "type": "Monomeric",
+          "usage": "Outdoor",
+          "duration_years": 3,
+          "roll_width_mm": 1220,
+          "cost_per_m2": 65
+        },
+        {
+          "type": "Monomeric",
+          "usage": "Outdoor",
+          "duration_years": 3,
+          "roll_width_mm": 1524,
+          "cost_per_m2": 65
+        },
+        {
+          "type": "Cast",
+          "usage": "Outdoor",
+          "duration_years": 5,
+          "roll_width_mm": 1524,
+          "cost_per_m2": 140
+        }
       ]
     }
-  ],
-
-  "labour": {
-    "cost_per_m2": 120
-  },
+  ]
+}
 
   "defaults": {
     "markup_percent": 100
