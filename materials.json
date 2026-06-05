@@ -90,6 +90,30 @@
           ]
         }
       ]
+    },
+
+    {
+      "id": "CHROMADEK",
+      "name": "Chromadek",
+      "category": "Sheet",
+
+      "substrates": true,
+
+      "variants": [
+        {
+          "thickness_mm": 0.8,
+
+          "sheet_size_mm": {
+            "width": 2440,
+            "height": 1220
+          },
+
+          "unit": "sheet",
+
+          "cost_per_sheet": 650,
+          "labour_cost": 50
+        }
+      ]
     }
   ]
 }
