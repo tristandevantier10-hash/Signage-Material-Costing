@@ -40,7 +40,9 @@
           "duration_years": 7,
 
           "formats": [
-            { "roll_width_mm": 600 }
+            { "roll_width_mm": 600 },
+            { "roll_width_mm": 1220 },
+            { "roll_width_mm": 1370 }
           ]
         },
 
