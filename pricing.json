@@ -4,33 +4,31 @@
       "id": "VINYL",
       "pricing": [
         {
-          "type": "Monomeric",
-          "usage": "Indoor",
+          "label": "Monomeric Indoor",
           "cost_per_m2": 55
         },
         {
-          "type": "Monomeric",
-          "usage": "Outdoor",
+          "label": "Monomeric Outdoor",
           "cost_per_m2": 65
         },
         {
-          "type": "Cast",
-          "usage": "Outdoor",
+          "label": "Cast Outdoor (7yr)",
           "cost_per_m2": 140
         },
         {
-          "type": "Specialty",
-          "usage": "Reflective Outdoor",
-          "cost_per_m2": 220
-        },
-        {
-          "type": "Specialty",
-          "usage": "Sandblast Indoor",
+          "label": "Cast Outdoor (10yr)",
           "cost_per_m2": 180
         },
         {
-          "type": "Specialty",
-          "usage": "Etched Glass Indoor",
+          "label": "Reflective Vinyl",
+          "cost_per_m2": 220
+        },
+        {
+          "label": "Sandblast Vinyl",
+          "cost_per_m2": 180
+        },
+        {
+          "label": "Etched Glass Vinyl",
           "cost_per_m2": 180
         }
       ]
@@ -40,21 +38,15 @@
       "id": "CHROMADEK",
       "pricing": [
         {
-          "type": "Chromadek",
-          "usage": "Sheet",
-          "thickness_mm": 0.8,
+          "label": "Chromadek 0.8mm",
           "cost_per_sheet": 650
         },
         {
-          "type": "Chromadek",
-          "usage": "Sheet",
-          "thickness_mm": 1.0,
+          "label": "Chromadek 1.0mm",
           "cost_per_sheet": 750
         },
         {
-          "type": "Chromadek",
-          "usage": "Sheet",
-          "thickness_mm": 1.2,
+          "label": "Chromadek 1.2mm",
           "cost_per_sheet": 850
         }
       ]
