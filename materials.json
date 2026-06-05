@@ -7,6 +7,7 @@
 
       "variants": [
         {
+          "label": "Monomeric Indoor",
           "type": "Monomeric",
           "usage": "Self-Adhesive Indoor",
           "duration_years": 1,
@@ -21,6 +22,7 @@
         },
 
         {
+          "label": "Monomeric Outdoor",
           "type": "Monomeric",
           "usage": "Self-Adhesive Outdoor",
           "duration_years": 3,
@@ -34,6 +36,7 @@
         },
 
         {
+          "label": "Cast Outdoor (7yr)",
           "type": "Cast",
           "usage": "Self-Adhesive Outdoor",
           "duration_years": 7,
@@ -45,6 +48,7 @@
         },
 
         {
+          "label": "Cast Outdoor (10yr)",
           "type": "Cast",
           "usage": "Self-Adhesive Outdoor",
           "duration_years": 10,
@@ -57,6 +61,7 @@
         },
 
         {
+          "label": "Reflective Vinyl",
           "type": "Specialty",
           "usage": "Reflective Outdoor",
           "duration_years": 7,
@@ -69,6 +74,7 @@
         },
 
         {
+          "label": "Sandblast Vinyl",
           "type": "Specialty",
           "usage": "Sandblast Indoor",
           "duration_years": 10,
@@ -80,6 +86,7 @@
         },
 
         {
+          "label": "Etched Glass Vinyl",
           "type": "Specialty",
           "usage": "Etched Glass Indoor",
           "duration_years": 10,
@@ -96,11 +103,11 @@
       "id": "CHROMADEK",
       "name": "Chromadek",
       "category": "Sheet",
-
       "substrates": true,
 
       "variants": [
         {
+          "label": "Chromadek 0.8mm",
           "thickness_mm": 0.8,
 
           "sheet_size_mm": {
@@ -109,9 +116,36 @@
           },
 
           "unit": "sheet",
-
           "cost_per_sheet": 650,
           "labour_cost": 50
+        },
+
+        {
+          "label": "Chromadek 1.0mm",
+          "thickness_mm": 1.0,
+
+          "sheet_size_mm": {
+            "width": 2440,
+            "height": 1220
+          },
+
+          "unit": "sheet",
+          "cost_per_sheet": 720,
+          "labour_cost": 60
+        },
+
+        {
+          "label": "Chromadek 1.2mm",
+          "thickness_mm": 1.2,
+
+          "sheet_size_mm": {
+            "width": 2440,
+            "height": 1220
+          },
+
+          "unit": "sheet",
+          "cost_per_sheet": 780,
+          "labour_cost": 70
         }
       ]
     }
