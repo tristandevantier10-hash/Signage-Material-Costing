@@ -41,6 +41,20 @@
           "cost_per_m2": 180
         }
       ]
+    },
+
+    {
+      "id": "CHROMADEK",
+
+      "pricing": [
+        {
+          "thickness_mm": 0.8,
+          "sheet_width_mm": 2440,
+          "sheet_height_mm": 1220,
+
+          "cost_per_sheet": 650
+        }
+      ]
     }
   ],
 
