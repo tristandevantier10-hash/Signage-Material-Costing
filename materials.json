@@ -1,98 +1,255 @@
 {
-  "materials": [
+  "id": "VINYL",
+  "name": "Adhesive Vinyl",
+  "category": "Roll",
+
+  "variants": [
+
     {
-      "id": "VINYL",
-      "name": "Adhesive Vinyl",
-      "category": "Roll",
-
-      "variants": [
-        {
-          "label": "Monomeric Indoor",
-          "type": "Monomeric",
-          "usage": "Self-Adhesive Indoor",
-          "duration_years": 1,
-
-          "formats": [
-            { "roll_width_mm": 300 },
-            { "roll_width_mm": 600 },
-            { "roll_width_mm": 1220 },
-            { "roll_width_mm": 1370 }
-          ]
-        },
-
-        {
-          "label": "Monomeric Outdoor",
-          "type": "Monomeric",
-          "usage": "Self-Adhesive Outdoor",
-          "duration_years": 3,
-
-          "formats": [
-            { "roll_width_mm": 600 },
-            { "roll_width_mm": 1220 },
-            { "roll_width_mm": 1370 }
-          ]
-        },
-
-        {
-          "label": "Cast Outdoor (7yr)",
-          "type": "Cast",
-          "usage": "Self-Adhesive Outdoor",
-          "duration_years": 7,
-
-          "formats": [
-            { "roll_width_mm": 600 },
-            { "roll_width_mm": 1220 },
-            { "roll_width_mm": 1370 }
-          ]
-        },
-
-        {
-          "label": "Cast Outdoor (10yr)",
-          "type": "Cast",
-          "usage": "Self-Adhesive Outdoor",
-          "duration_years": 10,
-
-          "formats": [
-            { "roll_width_mm": 1220 },
-            { "roll_width_mm": 1370 }
-          ]
-        },
-
-        {
-          "label": "Reflective Vinyl",
-          "type": "Specialty",
-          "usage": "Reflective Outdoor",
-          "duration_years": 7,
-
-          "formats": [
-            { "roll_width_mm": 600 },
-            { "roll_width_mm": 1220 }
-          ]
-        },
-
-        {
-          "label": "Sandblast Vinyl",
-          "type": "Specialty",
-          "usage": "Sandblast Indoor",
-          "duration_years": 10,
-
-          "formats": [
-            { "roll_width_mm": 1220 }
-          ]
-        },
-
-        {
-          "label": "Etched Glass Vinyl",
-          "type": "Specialty",
-          "usage": "Etched Glass Indoor",
-          "duration_years": 10,
-
-          "formats": [
-            { "roll_width_mm": 1220 }
-          ]
-        }
+      "label": "Monomeric Economy Indoor",
+      "type": "Monomeric",
+      "finish": "Gloss",
+      "usage": "Indoor",
+      "duration_years": 1,
+      "formats": [
+        { "roll_width_mm": 610 },
+        { "roll_width_mm": 1220 },
+        { "roll_width_mm": 1370 }
       ]
     },
+
+    {
+      "label": "Monomeric Economy Outdoor",
+      "type": "Monomeric",
+      "finish": "Gloss",
+      "usage": "Outdoor",
+      "duration_years": 3,
+      "formats": [
+        { "roll_width_mm": 610 },
+        { "roll_width_mm": 1220 },
+        { "roll_width_mm": 1370 }
+      ]
+    },
+
+    {
+      "label": "Polymeric Vinyl",
+      "type": "Polymeric",
+      "finish": "Gloss",
+      "usage": "Outdoor",
+      "duration_years": 5,
+      "formats": [
+        { "roll_width_mm": 610 },
+        { "roll_width_mm": 1220 },
+        { "roll_width_mm": 1370 },
+        { "roll_width_mm": 1520 }
+      ]
+    },
+
+    {
+      "label": "Cast Vinyl 7yr",
+      "type": "Cast",
+      "finish": "Gloss",
+      "usage": "Vehicle Wrap",
+      "duration_years": 7,
+      "formats": [
+        { "roll_width_mm": 1220 },
+        { "roll_width_mm": 1370 },
+        { "roll_width_mm": 1520 }
+      ]
+    },
+
+    {
+      "label": "Cast Vinyl 10yr",
+      "type": "Cast",
+      "finish": "Gloss",
+      "usage": "Vehicle Wrap",
+      "duration_years": 10,
+      "formats": [
+        { "roll_width_mm": 1220 },
+        { "roll_width_mm": 1370 },
+        { "roll_width_mm": 1520 }
+      ]
+    },
+
+    {
+      "label": "Printable Monomeric",
+      "type": "Digital Print",
+      "usage": "Printable",
+      "duration_years": 3,
+      "formats": [
+        { "roll_width_mm": 1370 },
+        { "roll_width_mm": 1520 }
+      ]
+    },
+
+    {
+      "label": "Printable Polymeric",
+      "type": "Digital Print",
+      "usage": "Printable",
+      "duration_years": 5,
+      "formats": [
+        { "roll_width_mm": 1370 },
+        { "roll_width_mm": 1520 }
+      ]
+    },
+
+    {
+      "label": "Printable Cast",
+      "type": "Digital Print",
+      "usage": "Vehicle Wrap",
+      "duration_years": 7,
+      "formats": [
+        { "roll_width_mm": 1370 },
+        { "roll_width_mm": 1520 }
+      ]
+    },
+
+    {
+      "label": "Reflective Engineering Grade",
+      "type": "Reflective",
+      "usage": "Road Sign",
+      "duration_years": 7,
+      "formats": [
+        { "roll_width_mm": 610 },
+        { "roll_width_mm": 1220 }
+      ]
+    },
+
+    {
+      "label": "Reflective High Intensity",
+      "type": "Reflective",
+      "usage": "Road Sign",
+      "duration_years": 10,
+      "formats": [
+        { "roll_width_mm": 610 },
+        { "roll_width_mm": 1220 }
+      ]
+    },
+
+    {
+      "label": "Reflective Diamond Grade",
+      "type": "Reflective",
+      "usage": "Road Sign",
+      "duration_years": 12,
+      "formats": [
+        { "roll_width_mm": 610 },
+        { "roll_width_mm": 1220 }
+      ]
+    },
+
+    {
+      "label": "Translucent Sign Vinyl",
+      "type": "Translucent",
+      "usage": "Lightbox",
+      "duration_years": 7,
+      "formats": [
+        { "roll_width_mm": 1220 }
+      ]
+    },
+
+    {
+      "label": "One Way Vision",
+      "type": "Perforated",
+      "usage": "Window Graphics",
+      "duration_years": 3,
+      "formats": [
+        { "roll_width_mm": 1370 },
+        { "roll_width_mm": 1520 }
+      ]
+    },
+
+    {
+      "label": "Wall Vinyl",
+      "type": "Wall Graphics",
+      "usage": "Interior Decor",
+      "duration_years": 5,
+      "formats": [
+        { "roll_width_mm": 1370 }
+      ]
+    },
+
+    {
+      "label": "Floor Vinyl",
+      "type": "Floor Graphics",
+      "usage": "Floor Graphics",
+      "duration_years": 2,
+      "formats": [
+        { "roll_width_mm": 1370 }
+      ]
+    },
+
+    {
+      "label": "Etched Glass",
+      "type": "Decorative",
+      "usage": "Window Frosting",
+      "duration_years": 10,
+      "formats": [
+        { "roll_width_mm": 1220 }
+      ]
+    },
+
+    {
+      "label": "Sandblast",
+      "type": "Decorative",
+      "usage": "Window Frosting",
+      "duration_years": 10,
+      "formats": [
+        { "roll_width_mm": 1220 }
+      ]
+    },
+
+    {
+      "label": "Chrome Vinyl",
+      "type": "Metallic",
+      "usage": "Decorative",
+      "duration_years": 3,
+      "formats": [
+        { "roll_width_mm": 1220 }
+      ]
+    },
+
+    {
+      "label": "Brushed Metal Vinyl",
+      "type": "Metallic",
+      "usage": "Decorative",
+      "duration_years": 5,
+      "formats": [
+        { "roll_width_mm": 1220 }
+      ]
+    },
+
+    {
+      "label": "Carbon Fibre Vinyl",
+      "type": "Textured",
+      "usage": "Vehicle Styling",
+      "duration_years": 5,
+      "formats": [
+        { "roll_width_mm": 1220 }
+      ]
+    },
+
+    {
+      "label": "Photoluminescent Vinyl",
+      "type": "Glow In Dark",
+      "usage": "Safety Signage",
+      "duration_years": 7,
+      "formats": [
+        { "roll_width_mm": 1220 }
+      ]
+    },
+
+    {
+      "label": "Magnetic Vehicle Vinyl",
+      "type": "Magnetic",
+      "usage": "Vehicle Graphics",
+      "duration_years": 5,
+      "formats": [
+        { "roll_width_mm": 610 },
+        { "roll_width_mm": 1220 }
+      ]
+    }
+  ]
+},
 
     {
       "id": "CHROMADEK",
