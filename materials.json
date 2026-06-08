@@ -4,6 +4,7 @@
       "id": "VINYL",
       "name": "Adhesive Vinyl",
       "category": "Roll",
+      "cost_model": "ROLL_AREA",
 
       "variants": [
         {
@@ -252,6 +253,7 @@
       "name": "Chromadek",
       "category": "Sheet",
       "substrates": true,
+      "cost_model": "SHEET_AREA",
 
       "variants": [
         {
