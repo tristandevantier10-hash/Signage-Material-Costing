@@ -12,6 +12,7 @@
           "type": "Monomeric",
           "usage": "Indoor",
           "duration_years": 1,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 610 },
             { "roll_width_mm": 1220 },
@@ -24,6 +25,7 @@
           "type": "Monomeric",
           "usage": "Outdoor",
           "duration_years": 3,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 610 },
             { "roll_width_mm": 1220 },
@@ -36,6 +38,7 @@
           "type": "Polymeric",
           "usage": "Outdoor",
           "duration_years": 5,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 610 },
             { "roll_width_mm": 1220 },
@@ -49,6 +52,7 @@
           "type": "Cast",
           "usage": "Vehicle Wrap",
           "duration_years": 7,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1220 },
             { "roll_width_mm": 1370 },
@@ -61,6 +65,7 @@
           "type": "Cast",
           "usage": "Vehicle Wrap",
           "duration_years": 10,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1220 },
             { "roll_width_mm": 1370 },
@@ -73,6 +78,7 @@
           "type": "Digital Print",
           "usage": "Printable",
           "duration_years": 3,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1370 },
             { "roll_width_mm": 1520 }
@@ -84,6 +90,7 @@
           "type": "Digital Print",
           "usage": "Printable",
           "duration_years": 5,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1370 },
             { "roll_width_mm": 1520 }
@@ -95,6 +102,7 @@
           "type": "Digital Print",
           "usage": "Vehicle Wrap",
           "duration_years": 7,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1370 },
             { "roll_width_mm": 1520 }
@@ -106,6 +114,7 @@
           "type": "Reflective",
           "usage": "Road Sign",
           "duration_years": 7,
+          "labour_factor": 0.7,
           "formats": [
             { "roll_width_mm": 610 },
             { "roll_width_mm": 1220 }
@@ -117,6 +126,7 @@
           "type": "Reflective",
           "usage": "Road Sign",
           "duration_years": 10,
+          "labour_factor": 0.7,
           "formats": [
             { "roll_width_mm": 610 },
             { "roll_width_mm": 1220 }
@@ -128,6 +138,7 @@
           "type": "Reflective",
           "usage": "Road Sign",
           "duration_years": 12,
+          "labour_factor": 0.7,
           "formats": [
             { "roll_width_mm": 610 },
             { "roll_width_mm": 1220 }
@@ -139,6 +150,7 @@
           "type": "Translucent",
           "usage": "Lightbox",
           "duration_years": 7,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1220 }
           ]
@@ -149,6 +161,7 @@
           "type": "Perforated",
           "usage": "Window Graphics",
           "duration_years": 3,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1370 },
             { "roll_width_mm": 1520 }
@@ -160,6 +173,7 @@
           "type": "Wall Graphics",
           "usage": "Interior Decor",
           "duration_years": 5,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1370 }
           ]
@@ -170,6 +184,7 @@
           "type": "Floor Graphics",
           "usage": "Floor Graphics",
           "duration_years": 2,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1370 }
           ]
@@ -180,6 +195,7 @@
           "type": "Decorative",
           "usage": "Window Frosting",
           "duration_years": 10,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1220 }
           ]
@@ -190,6 +206,7 @@
           "type": "Decorative",
           "usage": "Window Frosting",
           "duration_years": 10,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1220 }
           ]
@@ -200,6 +217,7 @@
           "type": "Metallic",
           "usage": "Decorative",
           "duration_years": 3,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1220 }
           ]
@@ -210,6 +228,7 @@
           "type": "Metallic",
           "usage": "Decorative",
           "duration_years": 5,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1220 }
           ]
@@ -220,6 +239,7 @@
           "type": "Textured",
           "usage": "Vehicle Styling",
           "duration_years": 5,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1220 }
           ]
@@ -230,6 +250,7 @@
           "type": "Glow In Dark",
           "usage": "Safety Signage",
           "duration_years": 7,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 1220 }
           ]
@@ -240,6 +261,7 @@
           "type": "Magnetic",
           "usage": "Vehicle Graphics",
           "duration_years": 5,
+          "labour_factor": 0.5,
           "formats": [
             { "roll_width_mm": 610 },
             { "roll_width_mm": 1220 }
@@ -261,6 +283,7 @@
           "type": "Chromadek",
           "usage": "Sheet",
           "thickness_mm": 0.8,
+          "labour_factor": 1,
           "formats": [
             {
               "sheet_width_mm": 2440,
@@ -274,6 +297,7 @@
           "type": "Chromadek",
           "usage": "Sheet",
           "thickness_mm": 1.0,
+          "labour_factor": 1,
           "formats": [
             {
               "sheet_width_mm": 2440,
@@ -287,6 +311,7 @@
           "type": "Chromadek",
           "usage": "Sheet",
           "thickness_mm": 1.2,
+          "labour_factor": 1.1,
           "formats": [
             {
               "sheet_width_mm": 2440,
