@@ -13,6 +13,24 @@
 //how much labour got involved
 //Then it totals everything into a final price
 
+struct CostTrace
+{
+    std::string materialId;
+    std::string variantLabel;
+
+    double width = 0;
+    double height = 0;
+    int qty = 0;
+
+    double areaPerItem = 0;
+    double totalArea = 0;
+
+    double labourFactor = 1.0;
+    double labourCost = 0;
+
+    double materialCost = 0;
+};
+
 struct ItemCostResult
 {
     // ---------------- CORE ----------------
@@ -59,3 +77,4 @@ class CostEngine
 public:
     CostResult calculate(Job job);
 };
+

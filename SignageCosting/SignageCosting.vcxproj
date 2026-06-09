@@ -139,6 +139,7 @@
     <ClCompile Include="Job.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MaterialDatabase.cpp" />
+    <ClCompile Include="NestingCalculator.cpp" />
     <ClCompile Include="NestingEngine.cpp" />
     <ClCompile Include="PricingDatabase.cpp" />
     <ClCompile Include="PricingRules.cpp" />
@@ -151,7 +152,9 @@
     <ClInclude Include="Job.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialDatabase.h" />
+    <ClInclude Include="NestingCalculator.h" />
     <ClInclude Include="NestingEngine.h" />
+    <ClInclude Include="NestingResult.h" />
     <ClInclude Include="PricingDatabase.h" />
     <ClInclude Include="PricingRules.h" />
   </ItemGroup>

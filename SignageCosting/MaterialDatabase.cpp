@@ -82,7 +82,7 @@ void MaterialDatabase::load(const std::string& jsonData)
                 mv.label = v.value("label", "");
                 mv.type = v.value("type", "");
                 mv.usage = v.value("usage", "");
-
+                mv.labour_factor = v.value("labour_factor", 1.0);
                 mv.duration_years = v.value("duration_years", 0);
                 mv.cost_per_m2 = v.value("cost_per_m2", 0.0);
 
@@ -95,10 +95,24 @@ void MaterialDatabase::load(const std::string& jsonData)
                 {
                     for (const auto& f : v["formats"])
                     {
-                        int w = f.value("roll_width_mm", 0);
+                        // ---------------- VINYL ----------------
+                        if (f.contains("roll_width_mm"))
+                        {
+                            int w = f.value("roll_width_mm", 0);
+                            if (w > 0)
+                                mv.roll_widths.push_back(w);
+                        }
 
-                        if (w > 0)
-                            mv.roll_widths.push_back(w);
+                        // ---------------- SHEETS ----------------
+                        else if (f.contains("sheet_width_mm"))
+                        {
+                            SheetFormat s;
+                            s.width = f.value("sheet_width_mm", 0);
+                            s.height = f.value("sheet_height_mm", 0);
+
+                            if (s.width > 0 && s.height > 0)
+                                mv.sheet_formats.push_back(s);
+                        }
                     }
                 }
 

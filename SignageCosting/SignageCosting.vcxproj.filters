@@ -42,6 +42,9 @@
     <ClCompile Include="InvoicePrinter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NestingCalculator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CostEngine.h">
@@ -72,6 +75,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InvoicePrinter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NestingResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NestingCalculator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

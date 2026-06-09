@@ -241,13 +241,34 @@ int main() {
 
                 if (selectedMaterial.category == "Roll")
                 {
-                    for (int i = 0; i < (int)selectedVariant.roll_widths.size(); i++)
-                        std::cout << i << ": " << selectedVariant.roll_widths[i] << "mm\n";
+                    if (!selectedVariant.roll_widths.empty())
+                    {
+                        for (size_t i = 0; i < selectedVariant.roll_widths.size(); i++)
+                            std::cout << i << ": " << selectedVariant.roll_widths[i] << "mm\n";
 
-                    int widthIndex;
-                    std::cin >> widthIndex;
+                        int widthIndex;
+                        std::cin >> widthIndex;
 
-                    selectedWidth = selectedVariant.roll_widths[widthIndex];
+                        selectedWidth = selectedVariant.roll_widths[widthIndex];
+                    }
+                }
+                else if (selectedMaterial.category == "Sheet")
+                {
+                    if (!selectedVariant.sheet_formats.empty())
+                    {
+                        for (size_t i = 0; i < selectedVariant.sheet_formats.size(); i++)
+                            std::cout << i << ": "
+                            << selectedVariant.sheet_formats[i].width
+                            << " x "
+                            << selectedVariant.sheet_formats[i].height
+                            << " mm\n";
+
+                        int sheetIndex;
+                        std::cin >> sheetIndex;
+
+                        // optional: store only width or both later
+                        selectedWidth = selectedVariant.sheet_formats[sheetIndex].width;
+                    }
                 }
 
                 item.material = selectedMaterial;
