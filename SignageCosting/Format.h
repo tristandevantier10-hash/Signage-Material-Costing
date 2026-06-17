@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <iomanip>
 #include <sstream>
@@ -19,7 +19,7 @@ namespace Format {
 
     inline std::string area(double v) {
         std::ostringstream ss;
-        ss << std::fixed << std::setprecision(2) << v << " m�";
+        ss << std::fixed << std::setprecision(2) << v << " m²";
         return ss.str();
     }
 

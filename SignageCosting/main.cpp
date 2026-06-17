@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "Job.h"
 #include "CostEngine.h"
 #include "HttpClient.h"
@@ -7,6 +7,12 @@
 #include <windows.h>
 #include "Format.h"
 #include "InvoicePrinter.h"
+#include "ProductionPricingDatabase.h"
+#include "TestJobFactory.h"
+#include <thread>
+#include <chrono>
+#include <limits>
+#include "TypeWriter.h"
 
 static constexpr bool ENABLE_MAIN_DEBUG = false;
 
@@ -21,6 +27,30 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
+    SetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE),
+        ENABLE_PROCESSED_OUTPUT | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+
+    std::cout <<
+        "==================================================\n"
+        "          E & G  S I G N S  CC\n"
+        "==================================================\n"
+        "\n"
+        "           ███████╗  ██████╗\n"
+        "           ██╔════╝ ██╔════╝\n"
+        "           █████╗   ██║  ███╗\n"
+        "           ██╔══╝   ██║   ██║\n"
+        "           ███████╗ ╚██████╔╝\n"
+        "           ╚══════╝  ╚═════╝\n"
+        "\n"
+        "        SIGNAGE COSTING SYSTEM\n"
+        "            VERSION 3.0\n"
+        "\n"
+        "==================================================\n"
+        << std::endl;
+
+    std::cout << "Press ENTER to continue...\n";
+    std::cin.get();
+
     std::cout <<
         "==================================================\n"
         "            MATERIAL COST ENGINE v2\n"
@@ -34,6 +64,7 @@ int main() {
 
     //
     std::cout << "[DATA] Loading materials...\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // 1 second
     //
 
     // =====================================================
@@ -54,6 +85,7 @@ int main() {
 
     //
     std::cout << "[DATA] Loading pricing...\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // 1 second
     //
 
     // =====================================================
@@ -63,15 +95,16 @@ int main() {
         HttpClient::get("https://raw.githubusercontent.com/tristandevantier10-hash/Signage-Material-Costing/main/pricing.json");
 
     PricingDatabase::load(pricingJson);
+    ProductionPricingDatabase::loadDefaults();
     MAIN_DEBUG("Pricing loaded");
 
     // =====================================================
     // DEBUG MATERIAL DUMP
     // =====================================================
-    std::cout <<
-        "==================================================\n"
-        "            MATERIAL CATALOGUE v1\n"
-        "==================================================\n\n";
+
+    TypeWriter::println("==================================================", 2);
+    TypeWriter::println("            MATERIAL CATALOGUE v1", 5);
+    TypeWriter::println("==================================================\n", 2);
 
     auto bases = MaterialDatabase::getBaseMaterials();
 
@@ -79,17 +112,24 @@ int main() {
     {
         Material m = MaterialDatabase::get(id);
 
-        std::cout << "\n[" << m.id << "] - " << m.name << "\n";
-        std::cout << "Category: " << m.category << "\n";
+        TypeWriter::print("\n[", 2);
+        TypeWriter::print(m.id);
+        TypeWriter::print("] - ");
+        TypeWriter::println(m.name, 2);
 
-        std::cout << "-------------------------------------------------------------------------------\n";
+        TypeWriter::print("Category: ");
+        TypeWriter::println(m.category, 2);
+
+        TypeWriter::println("-------------------------------------------------------------------------------", 1);
+
         std::cout << std::left
             << std::setw(4) << "#"
             << std::setw(32) << "Label"
             << std::setw(18) << "Type"
             << std::setw(18) << "Usage"
             << "Cost\n";
-        std::cout << "-------------------------------------------------------------------------------\n";
+
+        TypeWriter::println("-------------------------------------------------------------------------------", 1);
 
         for (size_t i = 0; i < m.variants.size(); i++)
         {
@@ -97,6 +137,7 @@ int main() {
 
             double liveCost = PricingDatabase::getMaterialCost(m.id, v.label);
 
+            // fast row print (NO typewriter here — important)
             std::cout << std::left
                 << std::setw(4) << i
                 << std::setw(32) << v.label
@@ -106,7 +147,7 @@ int main() {
                 << "\n";
         }
 
-        std::cout << "-------------------------------------------------------------------------------\n";
+        TypeWriter::println("-------------------------------------------------------------------------------", 1);
     }
 
     // =====================================================
@@ -126,34 +167,7 @@ int main() {
         // =====================================================
         if (mode == TEST)
         {
-            std::cout << "[MAIN] RUNNING IN TEST MODE\n";
-
-            // ---------------- VINYL ----------------
-            JobItem vinylItem;
-            vinylItem.material = MaterialDatabase::get("VINYL");
-            vinylItem.width = 300;
-            vinylItem.height = 300;
-            vinylItem.quantity = 5;
-
-            vinylItem.variantIndex = 4;
-
-            // ADD THIS (critical for roll materials)
-            const auto& v = vinylItem.material.variants[vinylItem.variantIndex];
-
-            // pick first available roll width (safe test default)
-            vinylItem.selectedRollWidth = v.roll_widths.empty() ? 0 : v.roll_widths[0];
-
-            job.addItem(vinylItem);
-
-            // ---------------- CHROMADEK ----------------
-            JobItem chromadekItem;
-            chromadekItem.material = MaterialDatabase::get("CHROMADEK"); // correct ID
-            chromadekItem.width = 500;
-            chromadekItem.height = 500;
-            chromadekItem.quantity = 5;
-
-            chromadekItem.variantIndex = 2; // 1.2mm
-            job.addItem(chromadekItem);
+            job = TestJobFactory::createDefaultTestJob();
         }
 
         // =====================================================
@@ -161,17 +175,17 @@ int main() {
         // =====================================================
         else
         {
+
             bool addMore = true;
 
             while (addMore)
             {
-                std::cout << "\n===========================\n";
                 std::cout << "ADD NEW JOB ITEM\n";
-                std::cout << "===========================\n";
+                std::cout << "------------------------\n";
 
                 auto materialList = MaterialDatabase::getBaseMaterials();
 
-                std::cout << "\nSelect Material:\n";
+                std::cout << "\nSelect Material:\n\n";
                 for (int i = 0; i < (int)materialList.size(); i++)
                 {
                     std::cout << i << ": " << materialList[i] << "\n";
@@ -189,6 +203,9 @@ int main() {
                 std::string baseId = materialList[matIndex];
                 Material selectedMaterial = MaterialDatabase::get(baseId);
 
+                std::cout << "\nSelected Material: " << selectedMaterial.name << "\n";
+                std::cout << "Available Variants:\n\n";
+
                 JobItem item;
 
                 std::cout << "\nEnter item width (mm): ";
@@ -201,8 +218,6 @@ int main() {
                 std::cin >> item.quantity;
 
                 auto variants = selectedMaterial.variants;
-
-                std::cout << "\nSelect Variant:\n";
 
                 std::cout << "\nSelect Variant:\n";
                 std::cout << "-------------------------------------------------------------------------------\n";
@@ -224,7 +239,6 @@ int main() {
                 }
 
                 std::cout << "-------------------------------------------------------------------------------\n";
-                std::cout << "Select variant #: ";
 
                 int variantIndex;
                 std::cin >> variantIndex;
@@ -237,6 +251,9 @@ int main() {
 
                 const auto& selectedVariant = variants[variantIndex];
 
+                //  ADD THIS RIGHT HERE
+                std::cout << "\nSelected Variant: " << selectedVariant.label << "\n\n";
+
                 int selectedWidth = 0;
 
                 if (selectedMaterial.category == "Roll")
@@ -246,12 +263,33 @@ int main() {
                         for (size_t i = 0; i < selectedVariant.roll_widths.size(); i++)
                             std::cout << i << ": " << selectedVariant.roll_widths[i] << "mm\n";
 
+                        int autoIndex = (int)selectedVariant.roll_widths.size();
+                        std::cout << autoIndex << ": AUTO OPTIMIZER\n";
+
                         int widthIndex;
                         std::cin >> widthIndex;
 
-                        selectedWidth = selectedVariant.roll_widths[widthIndex];
+                        // ---------------- SAFETY CHECK ----------------
+                        if (widthIndex < 0 || widthIndex > autoIndex)
+                        {
+                            std::cout << "[MAIN ERROR] Invalid roll selection\n";
+                            continue;
+                        }
+
+                        // ---------------- AUTO MODE ----------------
+                        if (widthIndex == autoIndex)
+                        {
+                            item.autoRoll = true;
+                            item.selectedRollWidth = 0; // ignored
+                        }
+                        else
+                        {
+                            item.autoRoll = false;
+                            selectedWidth = selectedVariant.roll_widths[widthIndex];
+                        }
                     }
                 }
+
                 else if (selectedMaterial.category == "Sheet")
                 {
                     if (!selectedVariant.sheet_formats.empty())
@@ -273,7 +311,55 @@ int main() {
 
                 item.material = selectedMaterial;
                 item.variantIndex = variantIndex;
-                item.selectedRollWidth = selectedWidth;
+
+                if (!item.autoRoll)
+                {
+                    item.selectedRollWidth = selectedWidth;
+                }
+
+                // =====================================================
+                // PRODUCTION OPTIONS
+                // =====================================================
+
+                char answer;
+
+                std::cout << "\n=== Production Options ===\n";
+
+                std::cout << "Print? (y/n): ";
+                std::cin >> answer;
+                item.production.print = (answer == 'y' || answer == 'Y');
+
+                std::cout << "Laminate? (y/n): ";
+                std::cin >> answer;
+                item.production.laminate = (answer == 'y' || answer == 'Y');
+
+                std::cout << "Plotter Cut? (y/n): ";
+                std::cin >> answer;
+                item.production.plotterCut = (answer == 'y' || answer == 'Y');
+
+                std::cout << "Router Cut? (y/n): ";
+                std::cin >> answer;
+                item.production.routerCut = (answer == 'y' || answer == 'Y');
+
+                std::cout << "Application Required? (y/n): ";
+                std::cin >> answer;
+                item.production.application = (answer == 'y' || answer == 'Y');
+
+                std::cout << "Frame Required? (y/n): ";
+                std::cin >> answer;
+                item.production.frame = (answer == 'y' || answer == 'Y');
+
+                // =====================================================
+                // DEBUG SUMMARY
+                // =====================================================
+
+                std::cout << "\n=== Production Summary ===\n";
+                std::cout << "Print: " << (item.production.print ? "Yes" : "No") << "\n";
+                std::cout << "Laminate: " << (item.production.laminate ? "Yes" : "No") << "\n";
+                std::cout << "Plotter Cut: " << (item.production.plotterCut ? "Yes" : "No") << "\n";
+                std::cout << "Router Cut: " << (item.production.routerCut ? "Yes" : "No") << "\n";
+                std::cout << "Application: " << (item.production.application ? "Yes" : "No") << "\n";
+                std::cout << "Frame: " << (item.production.frame ? "Yes" : "No") << "\n";
 
                 job.addItem(item);
 

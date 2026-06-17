@@ -2,6 +2,8 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <algorithm>
+#include <thread>
+#include <chrono>
 
 using json = nlohmann::json;
 
@@ -9,7 +11,7 @@ using json = nlohmann::json;
 static constexpr bool DEBUG_PRICING = false;
 
 #if DEBUG_PRICING
-#define PRICE_DEBUG(msg) std::cout << "[PricingDB DEBUG] " << msg << std::endl;
+#define PRICE_DEBUG(msg) std::cout << msg << std::endl;
 #else
 #define PRICE_DEBUG(msg)
 #endif
@@ -26,7 +28,8 @@ void PricingDatabase::load(const std::string& jsonData)
     //std::cout << "\n[PricingDB] ===============================\n";
     //std::cout << "[PricingDB] START LOAD\n";
     //std::cout << "[PricingDB] RAW SIZE: " << jsonData.size() << " bytes\n";
-    std::cout << "[OK] Pricing database loaded\n";
+    std::cout << "[OK] Pricing database loaded\n\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // 1 second
 
     try
     {
@@ -43,14 +46,19 @@ void PricingDatabase::load(const std::string& jsonData)
     // ---------------- LABOUR ----------------
     if (g_pricingRoot.contains("labour") && g_pricingRoot["labour"].is_object())
     {
-        labourPerM2 = g_pricingRoot["labour"].value("cost_per_m2", 0.0);
+        labourPerM2 = static_cast<double>(
+            g_pricingRoot["labour"].value("cost_per_m2", 0)
+            );
+
         PRICE_DEBUG("Labour per m2 = " + std::to_string(labourPerM2));
     }
 
     // ---------------- MARKUP ----------------
     if (g_pricingRoot.contains("defaults") && g_pricingRoot["defaults"].is_object())
     {
-        markupPercent = g_pricingRoot["defaults"].value("markup_percent", 0.0);
+        markupPercent = static_cast<double>(
+            g_pricingRoot["defaults"].value("markup_percent", 0)
+            );
         PRICE_DEBUG("Markup % = " + std::to_string(markupPercent));
     }
 

@@ -14,4 +14,5 @@ struct NestingResult
     double theoreticalAreaM2 = 0.0;
     double wastePercent = 0.0;
     double efficiencyPercent = 0.0;
+    double wasteAreaM2;
 };

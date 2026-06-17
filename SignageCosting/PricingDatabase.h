@@ -20,6 +20,14 @@ public:
         const std::string& materialId,
         const std::string& variantLabel);
 
+    // Production rates (temporary but clean integration)
+    static double getPrintRate();
+    static double getLaminateRate();
+    static double getPlotterCutRate();
+    static double getRouterCutRate();
+    static double getApplicationRate();
+    static double getFrameRate();
+
 private:
     static double labourPerM2;
     static double markupPercent;

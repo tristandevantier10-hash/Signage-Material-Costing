@@ -2,6 +2,8 @@
 #include "Job.h"
 #include <vector>
 #include <string>
+#include "ProductionOptions.h"
+#include "RollOptimizer.h"
 
 //DEFINITION//
 // ----------------- //
@@ -37,27 +39,37 @@ struct ItemCostResult
     std::string materialId;
     std::string category;
 
+    int quantity = 0;
     double area = 0.0;
 
     double materialCost = 0.0;
     double labourCost = 0.0;
 
     double markupValue = 0.0;
+    double totalCost = 0.0;
+    double sellPrice = 0.0;
 
-    double totalCost = 0.0;      // subtotal (material + labour)
-    double sellPrice = 0.0;      // final item price (WITH markup)
+    // ---------------- PRODUCTION ----------------
+    ProductionOptions production;
 
-    // ---------------- ROLL DEBUG INFO ----------------
+    // ---------------- DEBUG ----------------
     double rollWidth = 0.0;
     double requiredMeters = 0.0;
     double rollRate = 0.0;
 
-    // ---------------- SHEET DEBUG INFO ----------------
     double sheetsUsed = 0.0;
     double sheetRate = 0.0;
 
-    // ---------------- STRUCTURAL DEBUG INFO ----------------
     double totalLength = 0.0;
+    double productionCost = 0.0;
+
+    RollSolution rollSolution;
+
+    // ================= FIX: MIRROR INPUT DATA =================
+    double width = 0.0;
+    double height = 0.0;
+    bool autoRoll = true;
+    int variantIndex = 0;
 };
 
 struct CostResult
@@ -70,6 +82,7 @@ struct CostResult
     double totalCost = 0.0;   // base cost (NO markup)
     double sellPrice = 0.0;   // final invoice total
     double margin = 0.0;
+    double productionCost = 0.0;
 };
 
 class CostEngine

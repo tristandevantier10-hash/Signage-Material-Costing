@@ -2,6 +2,9 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <algorithm>
+#include <thread>
+#include <chrono>
+#include <limits>
 
 using json = nlohmann::json;
 
@@ -23,6 +26,7 @@ void MaterialDatabase::load(const std::string& jsonData)
     //std::cout << "[MaterialDB] START LOAD\n";
     //std::cout << "[MaterialDB] RAW SIZE: " << jsonData.size() << " bytes\n";
     std::cout << "[OK] Materials database loaded\n\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // 1 second
 
     try
     {

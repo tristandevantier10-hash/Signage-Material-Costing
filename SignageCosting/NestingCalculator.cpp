@@ -42,6 +42,9 @@ NestingResult NestingCalculator::Calculate(
 
     result.theoreticalAreaM2 = itemAreaM2;
 
+    // NEW: Waste calculation
+    result.wasteAreaM2 = result.consumedAreaM2 - result.theoreticalAreaM2;
+
     // Avoid divide by zero
     if (result.consumedAreaM2 > 0)
     {

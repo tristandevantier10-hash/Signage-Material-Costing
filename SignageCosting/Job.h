@@ -1,12 +1,13 @@
-#pragma once
+Ôªø#pragma once
 #include <vector>
 #include <string>
 #include "Material.h"
+#include "ProductionOptions.h"
 
 //DEFINITION//
 // ----------------- //
 // Shopping List for Signage - Makes list for Cost engine to calculate //
-// Itís the thing that tells the system ìwhat the user wants to makeî, before the system goes off and tries to figure out how much it costs to ruin expensive material doing it.//
+// It‚Äôs the thing that tells the system ‚Äúwhat the user wants to make‚Äù, before the system goes off and tries to figure out how much it costs to ruin expensive material doing it.//
 
 //Job = the whole order
 //JobItem = one line on that order
@@ -15,15 +16,15 @@
 //how big
 //how many
 //which version of the material
-//whether itís roll or sheet nonsense
+//whether it‚Äôs roll or sheet nonsense
 
 struct JobItem
 {
     Material material;
 
-    int width = 0;        // mm
-    int height = 0;       // mm
-    int quantity = 1;
+    double width;
+    double height;
+    int quantity;
 
     double lengthMeters = 0.0;
 
@@ -31,6 +32,11 @@ struct JobItem
 
     // ADD THIS (critical for your new JSON design)
     double selectedRollWidth = 0.0; // mm
+
+    bool autoRoll = true;
+
+    ProductionOptions production;
+
 };
 
 class Job {

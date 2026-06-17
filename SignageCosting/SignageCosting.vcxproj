@@ -108,6 +108,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,6 +144,10 @@
     <ClCompile Include="NestingEngine.cpp" />
     <ClCompile Include="PricingDatabase.cpp" />
     <ClCompile Include="PricingRules.cpp" />
+    <ClCompile Include="ProductionPricingDatabase.cpp" />
+    <ClCompile Include="RollOptimizer.cpp" />
+    <ClCompile Include="TestJobFactory.cpp" />
+    <ClCompile Include="TypeWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CostEngine.h" />
@@ -157,6 +162,11 @@
     <ClInclude Include="NestingResult.h" />
     <ClInclude Include="PricingDatabase.h" />
     <ClInclude Include="PricingRules.h" />
+    <ClInclude Include="ProductionOptions.h" />
+    <ClInclude Include="ProductionPricingDatabase.h" />
+    <ClInclude Include="RollOptimizer.h" />
+    <ClInclude Include="TestJobFactory.h" />
+    <ClInclude Include="TypeWriter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
