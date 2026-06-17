@@ -324,6 +324,62 @@
           ]
         }
       ]
-    }
+    },
+    
+    {
+      "id": "ACM",
+      "name": "Acm",
+      "category": "Sheet",
+      "substrates": true,
+      "cost_model": "SHEET_AREA",
+
+      "variants": [
+        {
+          "label": "Acm 2mm",
+          "type": "Acm",
+          "usage": "Sheet",
+          "thickness_mm": 0.8,
+          "labour_factor": 1,
+          "formats": [
+            {
+              "sheet_width_mm": 2440,
+              "sheet_height_mm": 1220
+            }
+          ]
+        },
+
+        {
+          "label": "Acm 3mm",
+          "type": "Acm",
+          "usage": "Sheet",
+          "thickness_mm": 1.0,
+          "labour_factor": 1,
+          "formats": [
+            {
+              "sheet_width_mm": 2440,
+              "sheet_height_mm": 1220
+            }
+          ]
+        },
+
+        {
+          "label": "Acm 4mm",
+          "type": "Acm",
+          "usage": "Sheet",
+          "thickness_mm": 1.2,
+          "labour_factor": 1.1,
+          "formats": [
+            {
+              "sheet_width_mm": 2440,
+              "sheet_height_mm": 1220           
+            },
+            {
+              "sheet_width_mm": 3000,
+              "sheet_height_mm": 1500           
+            }            
+          ]
+        }
+      ]
+    }    
   ]
 }
