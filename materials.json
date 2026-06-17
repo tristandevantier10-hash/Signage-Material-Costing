@@ -315,7 +315,7 @@
           "formats": [
             {
               "sheet_width_mm": 2440,
-              "sheet_height_mm": 1220
+              "sheet_height_mm": 1220,
               "sheet_width_mm": 3000,
               "sheet_height_mm": 1500              
             }
