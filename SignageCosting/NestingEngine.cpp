@@ -1,6 +1,8 @@
 #include "NestingEngine.h"
 #include <algorithm>
 
+// This is the Nesting Code //
+
 bool NestingEngine::canFit(Sheet& sheet, double w, double h)
 {
     return sheet.cursorX + w <= sheet.width;
@@ -46,6 +48,20 @@ void NestingEngine::newSheet(std::vector<Sheet>& sheets)
     s.cursorX = 0;
     s.cursorY = 0;
     s.rowHeight = 0;
+
+    // ----------------------------
+    // MAXRECTS START STATE
+    // ----------------------------
+    PlacedRect root;
+
+    root.x = 0;
+    root.y = 0;
+    root.width = sheetWidth;
+    root.height = sheetHeight;
+    root.rotated = false;
+
+    s.freeRects.clear();
+    s.freeRects.push_back(root);
 
     sheets.push_back(s);
 }

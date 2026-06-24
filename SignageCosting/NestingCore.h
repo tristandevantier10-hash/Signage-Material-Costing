@@ -1,10 +1,12 @@
 #pragma once
 
 #include <vector>
-#include "NestingEngine.h"   // REQUIRED
+#include "NestingEngine.h"
 
-class NestingCore {
+class NestingCore
+{
 public:
+
     std::vector<Sheet> pack(
         const std::vector<Rect>& items,
         double containerWidth,
@@ -12,10 +14,33 @@ public:
     );
 
 private:
-    bool canFit(Sheet& sheet, double w, double h);
-    void placeRect(Sheet& sheet, double w, double h, bool rotated);
-    void newRow(Sheet& sheet);
-    void newSheet(std::vector<Sheet>& sheets,
+
+    void newSheet(
+        std::vector<Sheet>& sheets,
         double width,
-        double height);
+        double height
+    );
+
+    bool tryPlaceInSheet(
+        Sheet& sheet,
+        double w,
+        double h,
+        bool& rotated,
+        double& outX,
+        double& outY,
+        int& usedIndex
+    );
+
+    void splitFreeRect(
+        Sheet& sheet,
+        int index,
+        double x,
+        double y,
+        double w,
+        double h
+    );
+
+private:
+    // SAFETY GUARD (does NOT break existing code)
+    bool isValidIndex(const Sheet& sheet, int index);
 };

@@ -2,6 +2,8 @@
 #include <vector>
 #include <algorithm>
 
+// Nesting Rectangles defintions //
+
 struct Rect {
     double width = 0;
     double height = 0;
@@ -20,17 +22,23 @@ struct PlacedRect
 };
 
 struct Sheet {
+
     double width = 0;
     double height = 0;
 
 
+    // OLD SYSTEM (keep temporarily)
     double cursorX = 0;
     double cursorY = 0;
-
     double rowHeight = 0;
 
 
+    // EXISTING RESULTS
     std::vector<PlacedRect> placed;
+
+
+    // NEW MAXRECTS SYSTEM
+    std::vector<PlacedRect> freeRects;
 };
 
 struct RollState {
