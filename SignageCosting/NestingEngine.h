@@ -8,15 +8,29 @@ struct Rect {
     int quantity = 0;
 };
 
+struct PlacedRect
+{
+    double x = 0;
+    double y = 0;
+
+    double width = 0;
+    double height = 0;
+
+    bool rotated = false;
+};
+
 struct Sheet {
     double width = 0;
     double height = 0;
 
+
     double cursorX = 0;
     double cursorY = 0;
+
     double rowHeight = 0;
 
-    std::vector<Rect> placed;
+
+    std::vector<PlacedRect> placed;
 };
 
 struct RollState {
@@ -33,10 +47,15 @@ public:
     double sheetHeight = 1220;
 
     bool canFit(Sheet& sheet, double w, double h);
-    void placeRect(Sheet& sheet, double w, double h);
+    void placeRect(
+        Sheet& sheet,
+        double w,
+        double h,
+        bool rotated);
     void newRow(Sheet& sheet);
     void newSheet(std::vector<Sheet>& sheets);
-    int calculateSheets(const std::vector<Rect>& items);
+    std::vector<Sheet> calculateSheets(
+        const std::vector<Rect>& items);
 
     // VINYL ROLL
     double calculateRollMeters(const std::vector<Rect>& items, double rollWidth);

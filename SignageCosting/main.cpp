@@ -204,7 +204,6 @@ int main() {
                 Material selectedMaterial = MaterialDatabase::get(baseId);
 
                 std::cout << "\nSelected Material: " << selectedMaterial.name << "\n";
-                std::cout << "Available Variants:\n\n";
 
                 JobItem item;
 

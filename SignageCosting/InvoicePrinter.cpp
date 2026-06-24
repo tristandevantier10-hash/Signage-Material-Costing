@@ -25,7 +25,7 @@ void InvoicePrinter::print(const CostResult& result)
         std::cout << "   Material: " << Format::money(item.materialCost)
             << " | Labour: " << Format::money(item.labourCost)
             << " | Prod: " << Format::money(item.productionCost)
-            << " | Markup: " << Format::money(item.markupValue) << "\n";
+            << " | Markup (100%): " << Format::money(item.markupValue) << "\n";
 
         // ---------------- PRODUCTION INLINE ----------------
         std::cout << "  -------------------------------------------------------------------------------------------- \n ";
