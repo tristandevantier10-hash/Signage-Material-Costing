@@ -60,6 +60,9 @@
     <ClCompile Include="NestingCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NestingRender.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CostEngine.h">
@@ -114,6 +117,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NestingCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NestingRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

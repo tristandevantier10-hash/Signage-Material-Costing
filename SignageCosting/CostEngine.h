@@ -4,6 +4,7 @@
 #include <string>
 #include "ProductionOptions.h"
 #include "RollOptimizer.h"
+#include "NestingCore.h"
 
 //DEFINITION//
 // ----------------- //
@@ -68,13 +69,14 @@ struct ItemCostResult
     // ================= FIX: MIRROR INPUT DATA =================
     double width = 0.0;
     double height = 0.0;
-    bool autoRoll = true;
+    bool autoRoll = false;
     int variantIndex = 0;
 };
 
 struct CostResult
 {
     std::vector<ItemCostResult> items;
+    std::vector<Sheet> nestingSheets;
 
     double materialCost = 0.0;
     double labourCost = 0.0;

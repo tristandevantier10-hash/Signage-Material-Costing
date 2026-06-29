@@ -11,18 +11,22 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* out
     return totalSize;
 }
 
-std::string HttpClient::get(const std::string& url) {
-
+std::string HttpClient::get(const std::string& url)
+{
     if (HTTP_DEBUG)
         std::cout << "\n[HTTP] GET " << url << std::endl;
 
     CURL* curl = curl_easy_init();
+    std::cout << curl_version() << std::endl;
     std::string response;
 
     if (!curl) {
         std::cerr << "[HTTP ERROR] CURL init failed\n";
         return "";
     }
+
+    // DEBUG BUFFER (IMPORTANT)
+    char errorBuffer[CURL_ERROR_SIZE] = { 0 };
 
     // =========================
     // REQUEST SETUP
@@ -32,13 +36,19 @@ std::string HttpClient::get(const std::string& url) {
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
 
     // =========================
+    // DEBUG OUTPUT (REAL FIX)
+    // =========================
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+    curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
+
+    // =========================
     // NETWORK RELIABILITY
     // =========================
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L);
 
     // =========================
-    // SSL FIX (DEV ONLY)
+    // SSL (DEV ONLY)
     // =========================
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
@@ -53,27 +63,31 @@ std::string HttpClient::get(const std::string& url) {
     // =========================
     // ERROR HANDLING
     // =========================
-    if (res != CURLE_OK) {
-        std::cerr << "[HTTP ERROR] Request failed: "
+    if (res != CURLE_OK)
+    {
+        std::cerr << "[HTTP ERROR] "
             << curl_easy_strerror(res) << "\n";
+
+        if (strlen(errorBuffer) > 0)
+            std::cerr << "[DETAIL] " << errorBuffer << "\n";
+
         std::cerr << "URL: " << url << "\n";
         return "";
     }
 
-    if (httpCode != 200) {
+    if (httpCode != 200)
+    {
         std::cerr << "[HTTP ERROR] HTTP " << httpCode
             << " | URL: " << url << "\n";
         return "";
     }
 
-    if (response.empty()) {
+    if (response.empty())
+    {
         std::cerr << "[HTTP ERROR] Empty response | URL: " << url << "\n";
         return "";
     }
 
-    // =========================
-    // CLEAN SUCCESS OUTPUT
-    // =========================
     if (HTTP_DEBUG)
     {
         std::cout << "[HTTP] OK "

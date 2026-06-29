@@ -29,6 +29,8 @@ CostResult CostEngine::calculate(Job job)
     const double labourRate = PricingDatabase::getLabourPerM2();
     const double markup = PricingDatabase::getMarkupPercent();
 
+    int jobCounter = 1;
+
     for (size_t i = 0; i < job.items.size(); i++)
     {
         auto& item = job.items[i];
@@ -104,48 +106,41 @@ CostResult CostEngine::calculate(Job job)
 
         if (rule == "ROLL_AREA")
         {
-            std::vector<double> rollOptions(v.roll_widths.begin(), v.roll_widths.end());
+            std::vector<double> rollOptions;
 
-            bool usedOptimizer = item.autoRoll;
-            double localResolvedRoll = item.selectedRollWidth;
-
-            if (usedOptimizer)
+            if (item.autoRoll)
             {
-                best = RollOptimizer::evaluate(
-                    item.width,
-                    item.height,
-                    item.quantity,
-                    rollOptions
-                );
-
-                localResolvedRoll = best.rollWidth;
+                // full search space
+                rollOptions.assign(v.roll_widths.begin(), v.roll_widths.end());
             }
             else
             {
-                best.rollWidth = localResolvedRoll;
-
-                double rollWidthM = localResolvedRoll / 1000.0;
-                double totalAreaLocal = totalArea;
-
-                double requiredMeters = totalAreaLocal / rollWidthM;
-                double rollAreaProvided = rollWidthM * requiredMeters * 1.02;
-
-                best.wasteArea = rollAreaProvided - totalAreaLocal;
-                best.lengthUsed = requiredMeters;
-                best.efficiency = (totalAreaLocal / rollAreaProvided) * 100.0;
-                best.rotated = false;
+                // constrained search space (ONLY selected width)
+                rollOptions.push_back(item.selectedRollWidth);
             }
 
+            best = RollOptimizer::evaluate(
+                item.width,
+                item.height,
+                item.quantity,
+                rollOptions
+            );
+
+            double localResolvedRoll = best.rollWidth;
             double rollWidthM = localResolvedRoll / 1000.0;
+
             double requiredMeters = totalArea / rollWidthM;
+            double rollAreaProvided = rollWidthM * requiredMeters * 1.02;
 
-            const double unitCost =
-                PricingDatabase::getMaterialCost(m.id, v.label);
-
-            materialCost = requiredMeters * unitCost;
+            best.lengthUsed = requiredMeters;
+            best.wasteArea = rollAreaProvided - totalArea;
+            best.efficiency = (totalArea / rollAreaProvided) * 100.0;
 
             itemResult.rollSolution = best;
             itemResult.rollWidth = localResolvedRoll;
+
+            materialCost = requiredMeters *
+                PricingDatabase::getMaterialCost(m.id, v.label);
         }
 
         // =====================================================
@@ -169,12 +164,14 @@ CostResult CostEngine::calculate(Job job)
             {
                 sheetLayouts = core.pack(rects, 2440, 1220);
 
+                result.nestingSheets = sheetLayouts;
+
                 // ================= DEBUG VERIFY CORE =================
                 int placedCount = 0;
                 for (const auto& s : sheetLayouts)
                     placedCount += (int)s.placed.size();
 
-                std::cout << "\n[CORE NESTING ACTIVE]\n";
+                std::cout << "\nJob " << jobCounter++ << "\n";
                 std::cout << "Sheets: " << sheetLayouts.size() << "\n";
                 std::cout << "Placed Rectangles: " << placedCount << "\n";
                 std::cout << "====================================\n";

@@ -40,6 +40,13 @@ private:
         double h
     );
 
+    // NEW
+    void pruneFreeRects(
+        Sheet& sheet
+    );
+
+    void pruneMaxRects(Sheet& sheet);
+
 private:
     // SAFETY GUARD (does NOT break existing code)
     bool isValidIndex(const Sheet& sheet, int index);

@@ -1,5 +1,7 @@
-#include "NestingCore.h"
+﻿#include "NestingCore.h"
 #include <algorithm>
+#include <limits>
+#include <iostream>
 
 void NestingCore::newSheet(
     std::vector<Sheet>& sheets,
@@ -34,34 +36,88 @@ bool NestingCore::tryPlaceInSheet(
     int& usedIndex)
 {
     if (sheet.freeRects.empty())
+    {
+        std::cout << "[TRY] FAIL - no free rects\n";
         return false;
+    }
+
+    double bestScore = std::numeric_limits<double>::max();
+    int bestIndex = -1;
+    bool bestRotated = false;
+    double bestX = 0;
+    double bestY = 0;
+
+    std::cout << "\n[TRY PLACE]\n";
+    std::cout << "FreeRects: " << sheet.freeRects.size()
+        << " | Item: " << w << "x" << h << "\n";
 
     for (int i = 0; i < (int)sheet.freeRects.size(); i++)
     {
-        auto& fr = sheet.freeRects[i];
+        const auto& fr = sheet.freeRects[i];
 
-        // normal
+        std::cout << "  FR[" << i << "] "
+            << "x=" << fr.x
+            << " y=" << fr.y
+            << " w=" << fr.width
+            << " h=" << fr.height << "\n";
+
+        auto evaluate = [&](double rw, double rh, bool isRot)
+            {
+                double leftoverW = fr.width - rw;
+                double leftoverH = fr.height - rh;
+
+                if (leftoverW < 0 || leftoverH < 0)
+                    return;
+
+                double areaFit = (fr.width * fr.height) - (rw * rh);
+
+                double waste = leftoverW + leftoverH;
+
+                // IMPORTANT: penalize rotation slightly (prevents over-rotation stacking)
+                double rotationPenalty = isRot ? 5000.0 : 0.0;
+
+                double score =
+                    areaFit * 1000.0 +
+                    waste * 10.0 +
+                    rotationPenalty;
+
+                if (score < bestScore)
+                {
+                    bestScore = score;
+                    bestIndex = i;
+                    bestRotated = isRot;
+                    bestX = fr.x;
+                    bestY = fr.y;
+                }
+            };
+
+        // NORMAL
         if (w <= fr.width && h <= fr.height)
-        {
-            outX = fr.x;
-            outY = fr.y;
-            rotated = false;
-            usedIndex = i;
-            return true;
-        }
+            evaluate(w, h, false);
 
-        // rotated
+        // ROTATED
         if (h <= fr.width && w <= fr.height)
-        {
-            outX = fr.x;
-            outY = fr.y;
-            rotated = true;
-            usedIndex = i;
-            return true;
-        }
+            evaluate(h, w, true);
     }
 
-    return false;
+    if (bestIndex == -1)
+    {
+        std::cout << "[TRY] FAIL - no fit found\n";
+        return false;
+    }
+
+    std::cout << "[TRY] SUCCESS -> index=" << bestIndex
+        << " rotated=" << bestRotated
+        << " x=" << bestX
+        << " y=" << bestY
+        << " score=" << bestScore << "\n";
+
+    outX = bestX;
+    outY = bestY;
+    rotated = bestRotated;
+    usedIndex = bestIndex;
+
+    return true;
 }
 
 void NestingCore::splitFreeRect(
@@ -78,48 +134,168 @@ void NestingCore::splitFreeRect(
     PlacedRect fr = sheet.freeRects[index];
     sheet.freeRects.erase(sheet.freeRects.begin() + index);
 
-    if (fr.x + fr.width > x + w)
+    double frRight = fr.x + fr.width;
+    double frTop = fr.y + fr.height;
+
+    double rectRight = x + w;
+    double rectTop = y + h;
+
+    // =====================================================
+    // MAXRECTS RULE: generate ONLY non-overlapping remainders
+    // =====================================================
+
+    // RIGHT STRIP (space to the right of placed rect)
+    if (rectRight < frRight)
     {
         PlacedRect r;
-        r.x = x + w;
+        r.x = rectRight;
         r.y = fr.y;
-        r.width = (fr.x + fr.width) - (x + w);
-        r.height = fr.height;
-        r.rotated = false;
-        sheet.freeRects.push_back(r);
+        r.width = frRight - rectRight;
+        r.height = h;
+
+        if (r.width > 0 && r.height > 0)
+            sheet.freeRects.push_back(r);
     }
 
-    if (fr.y + fr.height > y + h)
-    {
-        PlacedRect b;
-        b.x = fr.x;
-        b.y = y + h;
-        b.width = fr.width;
-        b.height = (fr.y + fr.height) - (y + h);
-        b.rotated = false;
-        sheet.freeRects.push_back(b);
-    }
-
-    if (fr.x < x)
-    {
-        PlacedRect l;
-        l.x = fr.x;
-        l.y = fr.y;
-        l.width = x - fr.x;
-        l.height = fr.height;
-        l.rotated = false;
-        sheet.freeRects.push_back(l);
-    }
-
-    if (fr.y < y)
+    // TOP STRIP (space above placed rect)
+    if (rectTop < frTop)
     {
         PlacedRect t;
         t.x = fr.x;
-        t.y = fr.y;
+        t.y = rectTop;
         t.width = fr.width;
-        t.height = y - fr.y;
-        t.rotated = false;
-        sheet.freeRects.push_back(t);
+        t.height = frTop - rectTop;
+
+        if (t.width > 0 && t.height > 0)
+            sheet.freeRects.push_back(t);
+    }
+
+    pruneFreeRects(sheet);
+}
+
+void NestingCore::pruneFreeRects(Sheet& sheet)
+{
+    for (int i = 0; i < (int)sheet.freeRects.size(); i++)
+    {
+        auto& a = sheet.freeRects[i];
+
+        // remove invalid rectangles
+        if (a.width <= 0 || a.height <= 0)
+        {
+            sheet.freeRects.erase(sheet.freeRects.begin() + i);
+            i--;
+            continue;
+        }
+
+        for (int j = i + 1; j < (int)sheet.freeRects.size(); j++)
+        {
+            auto& b = sheet.freeRects[j];
+
+            // ==============================
+            // CASE 1: B fully inside A
+            // ==============================
+            if (b.x >= a.x &&
+                b.y >= a.y &&
+                b.x + b.width <= a.x + a.width &&
+                b.y + b.height <= a.y + a.height)
+            {
+                sheet.freeRects.erase(sheet.freeRects.begin() + j);
+                j--;
+                continue;
+            }
+
+            // ==============================
+            // CASE 2: A fully inside B
+            // ==============================
+            if (a.x >= b.x &&
+                a.y >= b.y &&
+                a.x + a.width <= b.x + b.width &&
+                a.y + a.height <= b.y + b.height)
+            {
+                sheet.freeRects.erase(sheet.freeRects.begin() + i);
+                i--;
+                goto next_i;
+            }
+
+            // ==============================
+            // CASE 3: OVERLAP CLEANUP (NEW)
+            // remove redundant overlapped fragments
+            // ==============================
+            bool overlapX =
+                !(a.x + a.width <= b.x || b.x + b.width <= a.x);
+
+            bool overlapY =
+                !(a.y + a.height <= b.y || b.y + b.height <= a.y);
+
+            if (overlapX && overlapY)
+            {
+                double intersectionArea =
+                    std::max(0.0, std::min(a.x + a.width, b.x + b.width) - std::max(a.x, b.x)) *
+                    std::max(0.0, std::min(a.y + a.height, b.y + b.height) - std::max(a.y, b.y));
+
+                // If overlap is significant → remove smaller contributor
+                double areaA = a.width * a.height;
+                double areaB = b.width * b.height;
+
+                if (intersectionArea > 0.0)
+                {
+                    if (areaA < areaB)
+                    {
+                        sheet.freeRects.erase(sheet.freeRects.begin() + i);
+                        i--;
+                        goto next_i;
+                    }
+                    else
+                    {
+                        sheet.freeRects.erase(sheet.freeRects.begin() + j);
+                        j--;
+                    }
+                }
+            }
+        }
+
+    next_i:
+        continue;
+    }
+}
+
+void NestingCore::pruneMaxRects(Sheet& sheet)
+{
+    for (int i = 0; i < (int)sheet.freeRects.size(); i++)
+    {
+        for (int j = i + 1; j < (int)sheet.freeRects.size(); j++)
+        {
+            const PlacedRect& a = sheet.freeRects[i];
+            const PlacedRect& b = sheet.freeRects[j];
+
+            // -----------------------------
+            // A INSIDE B - remove A
+            // -----------------------------
+            if (a.x >= b.x &&
+                a.y >= b.y &&
+                a.x + a.width <= b.x + b.width &&
+                a.y + a.height <= b.y + b.height)
+            {
+                sheet.freeRects.erase(sheet.freeRects.begin() + i);
+                i--;
+                goto next_i;
+            }
+
+            // -----------------------------
+            // B INSIDE A - remove B
+            // -----------------------------
+            if (b.x >= a.x &&
+                b.y >= a.y &&
+                b.x + b.width <= a.x + a.width &&
+                b.y + b.height <= a.y + a.height)
+            {
+                sheet.freeRects.erase(sheet.freeRects.begin() + j);
+                j--;
+            }
+        }
+
+    next_i:
+        continue;
     }
 }
 
@@ -138,7 +314,7 @@ std::vector<Sheet> NestingCore::pack(
         {
             bool placed = false;
 
-            // PRE-FIT CHECK (CRITICAL FIX)
+            // PRE-FIT CHECK
             bool canFit =
                 (item.width <= containerWidth && item.height <= containerHeight) ||
                 (item.height <= containerWidth && item.width <= containerHeight);
@@ -166,7 +342,12 @@ std::vector<Sheet> NestingCore::pack(
                     sheet.placed.push_back(p);
 
                     if (index >= 0 && index < (int)sheet.freeRects.size())
-                        splitFreeRect(sheet, index, x, y, p.width, p.height);
+                    {
+                        double usedW = rotated ? item.height : item.width;
+                        double usedH = rotated ? item.width : item.height;
+
+                        splitFreeRect(sheet, index, x, y, usedW, usedH);
+                    }
 
                     placed = true;
                     break;
@@ -190,7 +371,7 @@ std::vector<Sheet> NestingCore::pack(
                 if (!tryPlaceInSheet(sheet, item.width, item.height,
                     rotated, x, y, index))
                 {
-                    continue; // still cannot place
+                    continue;
                 }
 
                 PlacedRect p;
@@ -203,7 +384,12 @@ std::vector<Sheet> NestingCore::pack(
                 sheet.placed.push_back(p);
 
                 if (index >= 0 && index < (int)sheet.freeRects.size())
-                    splitFreeRect(sheet, index, x, y, p.width, p.height);
+                {
+                    double usedW = rotated ? item.height : item.width;
+                    double usedH = rotated ? item.width : item.height;
+
+                    splitFreeRect(sheet, index, x, y, usedW, usedH);
+                }
             }
         }
     }
