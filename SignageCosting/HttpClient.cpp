@@ -1,11 +1,9 @@
 #include "HttpClient.h"
-#include <iostream>
 #include <string>
 #include <curl/curl.h>
 
-static constexpr bool HTTP_DEBUG = false;
-
-size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output)
+{
     size_t totalSize = size * nmemb;
     output->append((char*)contents, totalSize);
     return totalSize;
@@ -13,43 +11,26 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* out
 
 std::string HttpClient::get(const std::string& url)
 {
-    if (HTTP_DEBUG)
-        std::cout << "\n[HTTP] GET " << url << std::endl;
-
     CURL* curl = curl_easy_init();
-    std::cout << curl_version() << std::endl;
-    std::string response;
-
-    if (!curl) {
-        std::cerr << "[HTTP ERROR] CURL init failed\n";
+    if (!curl)
         return "";
-    }
 
-    // DEBUG BUFFER (IMPORTANT)
+    std::string response;
     char errorBuffer[CURL_ERROR_SIZE] = { 0 };
 
-    // =========================
-    // REQUEST SETUP
-    // =========================
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
 
-    // =========================
-    // DEBUG OUTPUT (REAL FIX)
-    // =========================
-    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+    // Silent mode (NO CURL DEBUG OUTPUT)
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
+
     curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
 
-    // =========================
-    // NETWORK RELIABILITY
-    // =========================
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L);
 
-    // =========================
-    // SSL (DEV ONLY)
-    // =========================
+    // NOTE: insecure settings kept as-is (dev behaviour preserved)
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 
@@ -60,42 +41,15 @@ std::string HttpClient::get(const std::string& url)
 
     curl_easy_cleanup(curl);
 
-    // =========================
-    // ERROR HANDLING
-    // =========================
+    // Silent failure handling (no console spam)
     if (res != CURLE_OK)
-    {
-        std::cerr << "[HTTP ERROR] "
-            << curl_easy_strerror(res) << "\n";
-
-        if (strlen(errorBuffer) > 0)
-            std::cerr << "[DETAIL] " << errorBuffer << "\n";
-
-        std::cerr << "URL: " << url << "\n";
         return "";
-    }
 
     if (httpCode != 200)
-    {
-        std::cerr << "[HTTP ERROR] HTTP " << httpCode
-            << " | URL: " << url << "\n";
         return "";
-    }
 
     if (response.empty())
-    {
-        std::cerr << "[HTTP ERROR] Empty response | URL: " << url << "\n";
         return "";
-    }
-
-    if (HTTP_DEBUG)
-    {
-        std::cout << "[HTTP] OK "
-            << httpCode
-            << " | "
-            << response.size()
-            << " bytes\n";
-    }
 
     return response;
 }

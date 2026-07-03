@@ -33,134 +33,83 @@ static constexpr bool ENABLE_MAIN_DEBUG = false;
 // GLOBAL STATE (UNCHANGED BEHAVIOUR)
 // =====================================================
 std::vector<Sheet> allSheets;
-int scrollY = 0;
+
 std::mutex sheetMutex;
 
-void runSDLViewer(
-    SDL_Window* window,
-    SDL_Renderer* renderer,
-    NestingRenderer& nestingRenderer)
+std::atomic<bool> appRunning = true;
+
+#include <queue>
+
+std::mutex jobMutex;
+std::queue<Job> jobQueue;
+
+void workerThread()
 {
-    bool running = true;
+    std::cout << "WORKER STARTED\n";
 
-    std::cout << "SDL LOOP STARTED\n";
+    // load databases ONCE
+    std::string jsonData =
+        HttpClient::get("https://raw.githubusercontent.com/tristandevantier10-hash/Signage-Material-Costing/main/materials.json");
 
-    int frameCount = 0;
-
-    while (running)
+    if (jsonData.empty())
     {
-        frameCount++;
+        appRunning = false;
+        return;
+    }
 
-        // =========================
-        // FRAME DEBUG (every ~60 frames)
-        // =========================
-        if (frameCount % 60 == 0)
+    MaterialDatabase::load(jsonData);
+
+    std::string pricingJson =
+        HttpClient::get("https://raw.githubusercontent.com/tristandevantier10-hash/Signage-Material-Costing/main/pricing.json");
+
+    PricingDatabase::load(pricingJson);
+    ProductionPricingDatabase::loadDefaults();
+
+    // MAIN WORK LOOP
+    while (appRunning)
+    {
+        Job job;
+        bool hasJob = false;
+
+        // STEP 1: pull job from queue
         {
-            std::cout << "[SDL] Frame: " << frameCount
-                << " | scrollY: " << scrollY << std::endl;
+            std::lock_guard<std::mutex> lock(jobMutex);
+
+            if (!jobQueue.empty())
+            {
+                job = jobQueue.front();
+                jobQueue.pop();
+                hasJob = true;
+            }
         }
 
-        SDL_Event e;
+        std::cout << "QUEUE SIZE: " << jobQueue.size() << std::endl;
 
-        // =========================
-        // EVENT HANDLING
-        // =========================
-        while (SDL_PollEvent(&e))
+        // STEP 2: if no job, sleep
+        if (!hasJob)
         {
-            if (e.type == SDL_QUIT)
-            {
-                std::cout << "[SDL] Quit event received\n";
-                running = false;
-            }
-
-            if (e.type == SDL_MOUSEWHEEL)
-            {
-                scrollY -= e.wheel.y * 40;
-                std::cout << "[SDL] Mouse wheel -> scrollY: " << scrollY << std::endl;
-            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            continue;
         }
 
-        const Uint8* state = SDL_GetKeyboardState(NULL);
-
-        if (state[SDL_SCANCODE_UP])
-            scrollY -= 10;
-
-        if (state[SDL_SCANCODE_DOWN])
-            scrollY += 10;
-
-        // =========================
-        // COPY DATA
-        // =========================
-        std::vector<Sheet> localCopy;
+        // STEP 3: process job
+        CostEngine engine;
+        CostResult result = engine.calculate(job);
 
         {
             std::lock_guard<std::mutex> lock(sheetMutex);
-            localCopy = allSheets;
-        }
 
-        //=========================
-        // CLAMP SCROLL
-        //=========================
-        if (scrollY < 0)
-            scrollY = 0;
-
-        int contentHeight = (int)allSheets.size() * 520;
-        int viewHeight = 600;
-
-        int maxScroll = contentHeight - viewHeight;
-
-        if (maxScroll < 0)
-            maxScroll = 0;
-
-        if (scrollY > maxScroll)
-            scrollY = maxScroll;
-
-        // =========================
-        // DATA DEBUG
-        // =========================
-        if (frameCount % 60 == 0)
-        {
-            std::cout << "[SDL] Sheets in memory: "
-                << localCopy.size() << std::endl;
-        }
-
-        // =========================
-        // RENDER
-        // =========================
-        SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255);
-        SDL_RenderClear(renderer);
-
-        int offsetY = 100 - scrollY;
-
-        int drawCount = 0;
-
-        for (const auto& sheet : localCopy)
-        {
-            nestingRenderer.drawSheet(
-                renderer,
-                sheet,
-                100,
-                offsetY,
-                800,
-                500
+            allSheets.insert(
+                allSheets.end(),
+                result.nestingSheets.begin(),
+                result.nestingSheets.end()
             );
-
-            offsetY += 520;
-            drawCount++;
         }
 
-        if (frameCount % 60 == 0)
-        {
-            std::cout << "[SDL] Sheets drawn this frame: "
-                << drawCount << std::endl;
-        }
-
-        SDL_RenderPresent(renderer);
-
-        SDL_Delay(16);
+        InvoicePrinter::print(result);
     }
 
-    std::cout << "SDL LOOP EXITED\n";
+    std::cout << "WORKER EXITED\n";
 }
 
 // =====================================================
@@ -203,18 +152,10 @@ int main() {
 
     NestingRenderer nestingRenderer;
 
-    std::thread sdlThread(
-        runSDLViewer,
-        window,
-        renderer,
-        std::ref(nestingRenderer)
-    );
+    std::thread worker(workerThread);
 
     SetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE),
         ENABLE_PROCESSED_OUTPUT | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
-
-    SDL_Window* windowRef = window;
-    SDL_Renderer* rendererRef = renderer;
 
     std::cout <<
         "==================================================\n"
@@ -254,37 +195,7 @@ int main() {
     PricingDatabase::load(pricingJson);
     ProductionPricingDatabase::loadDefaults();
 
-    //New Test Job Placement
-    std::cout << "CREATING TEST JOB\n";
 
-
-    Job job;
-
-    job = TestJobFactory::createDefaultTestJob();
-
-
-
-    CostEngine engine;
-
-
-    CostResult result =
-        engine.calculate(job);
-
-
-
-    {
-        std::lock_guard<std::mutex> lock(sheetMutex);
-
-
-        allSheets.insert(
-            allSheets.end(),
-            result.nestingSheets.begin(),
-            result.nestingSheets.end()
-        );
-
-    }
-
-    InvoicePrinter::print(result);
 
     std::cout << "\n";
 
@@ -298,6 +209,77 @@ int main() {
 
     while (running)
     {
+
+        while (appRunning)
+        {
+
+            SDL_Event e;
+
+
+            while (SDL_PollEvent(&e))
+            {
+
+                if (e.type == SDL_QUIT)
+                {
+                    appRunning = false;
+                }
+
+            }
+
+
+
+            std::vector<Sheet> localCopy;
+
+
+            {
+                std::lock_guard<std::mutex> lock(sheetMutex);
+                localCopy = allSheets;
+            }
+
+
+
+            SDL_SetRenderDrawColor(
+                renderer,
+                30,
+                30,
+                30,
+                255
+            );
+
+
+            SDL_RenderClear(renderer);
+
+
+
+            int y = 100;
+
+
+            for (auto& sheet : localCopy)
+            {
+
+                nestingRenderer.drawSheet(
+                    renderer,
+                    sheet,
+                    100,
+                    y,
+                    800,
+                    500
+                );
+
+
+                y += 520;
+
+            }
+
+
+
+            SDL_RenderPresent(renderer);
+
+
+            SDL_Delay(16);
+
+        }
+
         std::cout << "NEW JOB...\n\n";
 
         char choice;
@@ -431,36 +413,13 @@ int main() {
             }
         }
 
-        CostEngine engine;
-        CostResult result = engine.calculate(job);
-
-        // 1. update SDL data
         {
-            std::lock_guard<std::mutex> lock(sheetMutex);
-            allSheets.insert(
-                allSheets.end(),
-                result.nestingSheets.begin(),
-                result.nestingSheets.end()
-            );
+            std::lock_guard<std::mutex> lock(jobMutex);
+            std::cout << "[MAIN] ABOUT TO PUSH JOB\n";
+            jobQueue.push(job);
+            std::cout << "[MAIN] JOB PUSHED\n";
         }
-
-        // 2. invoice output (RESTORED)
-        InvoicePrinter::print(result);
-
-        std::cout << "\n";
-
-        // 3. console summary
-        std::cout << "TOTAL SHEETS: " << allSheets.size() << std::endl;
-        std::cout << "\n";
     }
-
-    // wake SDL thread safely
-    SDL_Event quitEvent;
-    quitEvent.type = SDL_QUIT;
-    SDL_PushEvent(&quitEvent);
-
-    if (sdlThread.joinable())
-        sdlThread.join();
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

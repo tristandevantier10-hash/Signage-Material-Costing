@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="CostEngine.cpp" />
     <ClCompile Include="HttpClient.cpp" />
     <ClCompile Include="InvoicePrinter.cpp" />
@@ -161,6 +162,8 @@
     <ClCompile Include="TypeWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="AppState.h" />
     <ClInclude Include="CostEngine.h" />
     <ClInclude Include="Format.h" />
     <ClInclude Include="HttpClient.h" />
